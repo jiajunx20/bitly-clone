@@ -6,20 +6,16 @@ var jsonParser = bodyParser.json();
 
 var urlService = require('../services/urlService');
 
-router.get('*', function(req, res) {
-	var shortUrl = req.originalUrl.slice(1);
-	var longUrl = getLongUrl(shortUrl, req.app.shortToLong); // implement this
-	res.redirect(longUrl);
-});
-
-router.post('/urls', function(req, res) {
-	var longUrl = req.body.longUrl;
-	// implement 
-	var shortUrl = getShortUrl(longUrl, req.app.longToShort, req.app.shortToLong);
+router.post('/:longUrl',jsonParser, function(req, res) {
+	
+	var longUrl = req.params.longUrl;
+	var shortUrl = urlService.getShortUrl(longUrl, req.app.longToShort, req.app.shortToLong);
 	res.json({
-		longUrl: req.body.longUrl,
-		shortUrl: shortUrl
-	})
+		longUrl: longUrl,
+		shortUrl: shortUrl,
+		longToShort: req.app.longToShort,
+		shortToLong: req.app.shortToLong
+	});
 });
 
 module.exports = router;
