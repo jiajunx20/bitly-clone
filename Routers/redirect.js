@@ -3,12 +3,9 @@ var router = express.Router();
 var urlService = require('../services/urlService');
 
 router.get('*', function(req, res) {
-	
-	var shortUrl = req.originalUrl.slice(1);
-	var longUrl = urlService.getLongUrl(shortUrl, req.app.shortToLong); // implement this
-
-	res.redirect(longUrl);
+    var shortUrl = req.originalUrl.slice(1);
+    var longUrl = urlService.getLongUrl(shortUrl, req.app.shortToLong);
+    res.redirect(longUrl);
 });
 
 module.exports = router;
-
