@@ -1,4 +1,8 @@
 var UrlModel = require('../models/urlModel');
+var redis = require('redis');
+
+var host = process.env.REDIS_PORT_6379_TCR_ADDR || "127.0.0.1";
+var port = process.env.REDIS_PORT_6379_TCR_PORT || '6379';
 
 var encode = [];
 
