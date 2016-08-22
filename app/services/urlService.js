@@ -1,8 +1,6 @@
 var UrlModel = require('../models/urlModel');
 
 var encode = [];
-var decode = [];
-
 
 var genCharArray = function(charA, charZ) {
     var arr = [],
@@ -18,10 +16,6 @@ var genCharArray = function(charA, charZ) {
 encode = encode.concat(genCharArray('a', 'z'));
 encode = encode.concat(genCharArray('A', 'Z'));
 encode = encode.concat(genCharArray('0', '9'));
-
-for (var i = 0; i < encode.length; i++) {
-    decode[encode[i]] = i;
-}
 
 var convertTo62 = function(num) {
     var result = '';
@@ -40,8 +34,6 @@ var getLongUrl = function(shortUrl, callback) {
     }, function(err, data) {
         if (data) {
             callback(data);
-        } else {
-
         }
     });
 };

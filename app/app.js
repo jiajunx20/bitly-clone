@@ -1,9 +1,9 @@
 var express = require('express');
 var app = express();
 
-var rest = require('./routers/rest');
-var redirect = require('./routers/redirect');
-var indexRouter = require('./routers/index');
+var rest = require('../routers/rest');
+var redirect = require('../routers/redirect');
+var indexRouter = require('../routers/index');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://<jiajunx>:<admin>@ds061375.mlab.com:61375/tinyurl');

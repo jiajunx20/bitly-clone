@@ -4,7 +4,7 @@ RUN npm install nodemon --g
 RUN mkdir -p /app
 WORKDIR /app
 
-ADD . /
+ADD . /app
 
 RUN cd /app && npm install
 
