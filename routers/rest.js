@@ -9,7 +9,7 @@ var urlService = require('../services/urlService');
 router.post('/urls', jsonParser, function(req, res) {
 
     var longUrl = req.body.longUrl;
-    urlService.getLongUrl(longUrl, function(url) {
+    urlService.getShortUrl(longUrl, function(shortUrl) {
         res.json({
             longUrl: longUrl,
             shortUrl: shortUrl
@@ -19,24 +19,13 @@ router.post('/urls', jsonParser, function(req, res) {
 
 router.get("urls/:shortUrl", function(req, res) {
     var shortUrl = req.params.shortUrl;
-    var longUrl = urlService.getLongUrl(shortUrl, req.app.shortToLong)
-    if (longUrl) {
-        res.json({
-            shortUrl: shortUrl,
-            longUrl: longUrl
-        });
-    } else {
-        res.status(404).send("You gotta be FUCKING kidding me! ! !")
-    }
-});
-
-module.exports = router;
-longUrl: longUrl
-});
-}
-else {
-    res.status(404).send("You gotta be FUCKING kidding me! ! !")
-}
+    var longUrl = urlService.getLongUrl(shortUrl, function(url) {
+        if (url) {
+            res.json(url);
+        } else {
+            res.status(404).send("You gotta be FUCKING kidding me! ! !");
+        }
+    });
 });
 
 module.exports = router;

@@ -1,3 +1,5 @@
+var UrlModel = require('../models/urlModel')
+
 var encode = [];
 var decode = [];
 
@@ -33,26 +35,43 @@ var convertTo62 = function(num) {
 };
 
 var getLongUrl = function(shortUrl, callback) {
-    return shortToLong[shortUrl];
+    UrlModel.findOne({
+        shortUrl: shortUrl
+    }, function(err, data) {
+        if (data) {
+            callback(data);
+        } else {
+
+        }
+    });
 };
 
-var getShortUrl = function(longUrl, longToshort, shortToLong) {
+var getShortUrl = function(longUrl, callback) {
     if (!longUrl.startsWith('http://')) {
         longUrl = "http://" + longUrl;
     }
-
-    if (longToshort[longUrl]) {
-        return longToshort[longUrl];
-    } else {
-        var shortUrl = generateShortUrl(longToshort);
-        longToshort[longUrl] = shortUrl;
-        shortToLong[shortUrl] = longUrl;
-        return shortUrl;
-    }
+    UrlModel.findOne({
+        longUrl: longUrl
+    }, function(err, data) {
+        if (data) {
+            callback(data);
+        } else {
+            generateShortUrl(function(shortUrl) {
+                var url = new UrlModel({
+                    shortUrl: shortUrl,
+                    longUrl: longUrl
+                });
+                url.save();
+                callback(url);
+            });
+        }
+    });
 };
 
-var generateShortUrl = function(longToshort) {
-    return convertTo62(Object.keys(longToshort).length);
+var generateShortUrl = function(callback) {
+    UrlModel.find({}, function(err, urls) {
+        callback(convertTo62(urls.length));
+    });
 };
 
 module.exports = {
