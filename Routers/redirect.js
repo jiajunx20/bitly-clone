@@ -8,7 +8,7 @@ router.get('*', function(req, res) {
         if (url) {
             res.redirect(longUrl);
         } else {
-            res.sendFile('../public/views/error.html')
+            res.sendFile('../public/views/error.html');
         }
     });
 });

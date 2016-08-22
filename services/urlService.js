@@ -1,4 +1,4 @@
-var UrlModel = require('../models/urlModel')
+var UrlModel = require('../models/urlModel');
 
 var encode = [];
 var decode = [];
