@@ -38,6 +38,8 @@ var getLongUrl = function(shortUrl, callback) {
     }, function(err, data) {
         if (data) {
             callback(data);
+        } else {
+            // handle the error here
         }
     });
 };
@@ -49,24 +51,21 @@ var getShortUrl = function(longUrl, callback) {
     UrlModel.findOne({
         longUrl: longUrl
     }, function(err, data) {
-        if (data) {
-            callback(data);
-        } else {
-            generateShortUrl(function(shortUrl) {
-                var url = new UrlModel({
-                    shortUrl: shortUrl,
-                    longUrl: longUrl
-                });
-                url.save();
-                callback(url);
+        if (!data) {
+            var shortUrl = generateShortUrl();
+            data = new urlModel({
+                shortUrl: shortUrl,
+                longUrl: longUrl
             });
+            data.save();
         }
+        callback(data);
     });
 };
 
-var generateShortUrl = function(callback) {
+var generateShortUrl = function() {
     UrlModel.find({}, function(err, urls) {
-        callback(convertTo62(urls.length));
+        return convertTo62(urls.length);
     });
 };
 
