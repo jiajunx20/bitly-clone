@@ -25,4 +25,10 @@ router.get("urls/:shortUrl", function(req, res) {
     });
 });
 
+router.get("/urls/:shortUrl/:info", function(req, res) {
+    stateService.getInfo(req.params.shortUrl, req.params.info, function(data) {
+        res.json(data);
+    });
+});
+
 module.exports = router;
