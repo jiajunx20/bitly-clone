@@ -23,7 +23,6 @@ encode = encode.concat(genCharArray('0', '9'));
 
 var convertTo62 = function(num) {
     var result = '';
-
     do {
         result += encode[num % 62];
         num = Math.floor(num / 62);
@@ -48,24 +47,28 @@ var getShortUrl = function(longUrl, callback) {
     if (!longUrl.startsWith('http://')) {
         longUrl = "http://" + longUrl;
     }
+
     UrlModel.findOne({
         longUrl: longUrl
     }, function(err, data) {
-        if (!data) {
-            var shortUrl = generateShortUrl();
-            data = new UrlModel({
-                shortUrl: shortUrl,
-                longUrl: longUrl
+        if (data) {
+            callback(data);
+        } else {
+            generateShortUrl(function(shortUrl) {
+                data = new UrlModel({
+                    shortUrl: shortUrl,
+                    longUrl: longUrl
+                });
+                data.save();
+                callback(data);
             });
-            data.save();
         }
-        callback(data);
     });
 };
 
-var generateShortUrl = function() {
+var generateShortUrl = function(callback) {
     UrlModel.find({}, function(err, urls) {
-        return convertTo62(urls.length);
+        callback(convertTo62(urls.length));
     });
 };
 
