@@ -22,7 +22,7 @@ var logRequest = function(req, shortUrl) {
     }
     var request = new RequestModel(reqInfo);
     request.save();
-}
+};
 
 var getUrlInfo = function(shortUrl, info, callback) {
     if (info == 'totalClicks') {
