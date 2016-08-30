@@ -12,7 +12,7 @@ var useragent = require('express-useragent');
 
 app.use('/public', express.static(__dirname + '/public'));
 
-app.use(useragent.express());
+// app.use(useragent.express());
 
 app.use('/api/v1', rest);
 

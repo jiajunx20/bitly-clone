@@ -53,7 +53,7 @@ var getShortUrl = function(longUrl, callback) {
     }, function(err, data) {
         if (!data) {
             var shortUrl = generateShortUrl();
-            data = new urlModel({
+            data = new UrlModel({
                 shortUrl: shortUrl,
                 longUrl: longUrl
             });
