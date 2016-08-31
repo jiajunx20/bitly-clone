@@ -39,6 +39,7 @@ var getLongUrl = function(shortUrl, callback) {
             callback(data);
         } else {
             // handle the error here
+            callback(err);
         }
     });
 };
