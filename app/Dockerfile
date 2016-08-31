@@ -10,4 +10,4 @@ RUN cd /app && npm install
 
 EXPOSE 3000
 
-CMD ["nodemon", "app/app.js"]
+CMD ["nodemon", "/app/app.js"]
