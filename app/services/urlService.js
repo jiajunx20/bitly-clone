@@ -1,8 +1,8 @@
 var UrlModel = require('../models/urlModel');
-// var redis = require('redis');
-
-var host = process.env.REDIS_PORT_6379_TCR_ADDR || "127.0.0.1";
-var port = process.env.REDIS_PORT_6379_TCR_PORT || '6379';
+var redis = require('redis');
+var host = process.env.REDIS_PORT_6379_TCP_ADDR || '127.0.0.1';
+var port = process.env.REDIS_PORT_6379_TCP_PORT || '6379';
+var redisClient = redis.createClient(port, host);
 
 var encode = [];
 
@@ -32,13 +32,23 @@ var convertTo62 = function(num) {
 };
 
 var getLongUrl = function(shortUrl, callback) {
-    UrlModel.findOne({
-        shortUrl: shortUrl
-    }, function(err, data) {
+    redisClient.get(shortUrl, function(err, data) {
         if (data) {
-            callback(data);
+            console.log("no more db");
+            callback({
+                shortUrl: shortUrl,
+                longUrl: data
+            });
         } else {
-            callback(err);
+            UrlModel.findOne({
+                shortUrl: shortUrl
+            }, function(err, data) {
+                if (data) {
+                    callback(data);
+                } else {
+                    callback(err);
+                }
+            });
         }
     });
 };
@@ -48,19 +58,31 @@ var getShortUrl = function(longUrl, callback) {
         longUrl = "http://" + longUrl;
     }
 
-    UrlModel.findOne({
-        longUrl: longUrl
-    }, function(err, data) {
+    redisClient.get(longUrl, function(err, data) {
         if (data) {
-            callback(data);
+            console.log("no more db");
+            callback({
+                longUrl: longUrl,
+                shortUrl: data
+            });
         } else {
-            generateShortUrl(function(shortUrl) {
-                data = new UrlModel({
-                    shortUrl: shortUrl,
-                    longUrl: longUrl
-                });
-                data.save();
-                callback(data);
+            UrlModel.findOne({
+                longUrl: longUrl
+            }, function(err, data) {
+                if (data) {
+                    callback(data);
+                } else {
+                    generateShortUrl(function(shortUrl) {
+                        data = new UrlModel({
+                            shortUrl: shortUrl,
+                            longUrl: longUrl
+                        });
+                        data.save();
+                        redisClient.set(shortUrl, longUrl);
+                        redisClient.set(longUrl, shortUrl);
+                        callback(data);
+                    });
+                }
             });
         }
     });
