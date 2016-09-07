@@ -32,12 +32,11 @@ var convertTo62 = function(num) {
 };
 
 var getLongUrl = function(shortUrl, callback) {
-    redisClient.get(shortUrl, function(err, data) {
-        if (data) {
-            console.log("no more db");
+    redisClient.get(shortUrl, function(err, longUrl) {
+        if (longUrl) {
             callback({
                 shortUrl: shortUrl,
-                longUrl: data
+                longUrl: longUrl
             });
         } else {
             UrlModel.findOne({
@@ -58,12 +57,11 @@ var getShortUrl = function(longUrl, callback) {
         longUrl = "http://" + longUrl;
     }
 
-    redisClient.get(longUrl, function(err, data) {
-        if (data) {
-            console.log("no more db");
+    redisClient.get(longUrl, function(err, shortUrl) {
+        if (shortUrl) {
             callback({
                 longUrl: longUrl,
-                shortUrl: data
+                shortUrl: shortUrl
             });
         } else {
             UrlModel.findOne({

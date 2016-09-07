@@ -17,7 +17,6 @@ router.get("/urls/:shortUrl", function(req, res) {
     var shortUrl = req.params.shortUrl;
     var longUrl = urlService.getLongUrl(shortUrl, function(urlPair) {
         if (urlPair) {
-            console.log('lolo');
             res.json(urlPair);
         } else {
             res.status(404).send("You gotta be FUCKING kidding me! ! !");
