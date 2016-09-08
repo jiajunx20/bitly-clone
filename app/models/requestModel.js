@@ -12,4 +12,4 @@ var RequestSchema = new Schema({
 
 var requestModel = mongoose.model('requestModel', RequestSchema);
 
-module.export = requestModel;
+module.exports = requestModel;
