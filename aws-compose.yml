@@ -1,5 +1,7 @@
 nginx:
   image: jiajunx/nginx
+  cpu_shares: 100
+  mem_limit: 262144000
   ports:
      - "80:80"
   links:
@@ -8,6 +10,8 @@ nginx:
      - "app3:app3"
 app1:
   image: jiajunx/tinyurl
+  cpu_shares: 100
+  mem_limit: 262144000
   ports:
      - "3000"
   links:
@@ -15,6 +19,8 @@ app1:
 
 app2:
   image: jiajunx/tinyurl
+  cpu_shares: 100
+  mem_limit: 262144000
   ports:
      - "3000"
   links:
@@ -22,6 +28,8 @@ app2:
 
 app3:
   image: jiajunx/tinyurl
+  cpu_shares: 100
+  mem_limit: 262144000
   ports:
      - "3000"
   links:
@@ -29,3 +37,5 @@ app3:
 
 cache:
   image: redis
+  cpu_shares: 100
+  mem_limit: 262144000
